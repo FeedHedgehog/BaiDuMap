@@ -77,13 +77,13 @@
 	//map.addEventListener("click", showInfo);		
 	
 	
-	// var sContent =
-	// "<h4 style='margin:0 0 5px 0;padding:0.2em 0'>六盘水</h4>" + 
-	// "<img style='float:right;margin:4px' id='imgDemo' src='http://app.baidu.com/map/images/tiananmen.jpg' width='139' height='104' title='天安门'/>" + 
-	// "<p style='margin:0;line-height:1.5;font-size:13px;text-indent:2em'>六盘水是...</p>" + 
-	// "</div>";
-	// var projectPoint = new BMap.Point(104.062875,30.665651);						
-		// ShowProjectInfo("imgDemo",projectPoint,sContent,level);	
+	var sContent =
+	"<h4 style='margin:0 0 5px 0;padding:0.2em 0'>六盘水</h4>" + 
+	"<img style='float:right;margin:4px' id='imgDemo' src='http://app.baidu.com/map/images/tiananmen.jpg' width='139' height='104' title='天安门'/>" + 
+	"<p style='margin:0;line-height:1.5;font-size:13px;text-indent:2em'>六盘水是...</p>" + 
+	"</div>";
+	var projectPoint = new BMap.Point(104.062875,30.665651);						
+		ShowProjectInfo("imgDemo",projectPoint,sContent,level);	
 	
 	map.addEventListener("tilesloaded",function(e){		
 		//alert("地图加载完毕");
@@ -210,10 +210,10 @@
 	  if(level == inputlevel){
 		  //map.clearOverlays(); 		  
 		  // var lifeIcon = new BMap.Icon("http://app.baidu.com/map/images/tiananmen.jpg", new BMap.Size(300,157));  // 创建标注
-		  // var pt1 = BMap.Point(104.072289,30.656393);
+		  // var pt1 = BMap.Point(104.074733,30.678945);
 		  // var marker = new BMap.Marker(pt1,{icon:lifeIcon});
 		  // map.addOverlay(marker);              // 将标注添加到地图中
-		  // map.panTo(pt1); 
+		  //map.panTo(pt1); 
 		  //alert("Icon added");
 		  var pt = BMap.Point(104.062947,30.665526);
 		  var myIcon = new BMap.Icon("http://developer.baidu.com/map/jsdemo/img/fox.gif", new BMap.Size(300,157));
@@ -235,7 +235,7 @@
 		  infoWindow.redraw();   //防止在网速较慢，图片未加载时，生成的信息框高度比图片的总高度小，导致图片部分被隐藏
 	  }
 	 });
-	 alert("showProjectInfo");
+	 //alert("showProjectInfo");
   }
 	
 	
