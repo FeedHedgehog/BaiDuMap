@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+	<style type="text/css">
+	body, html,#allmap {width: 100%;height: 100%;overflow: hidden;margin:0;font-family:"微软雅黑";}
+	</style>
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=fsYq13sB9k3aO9wW0rosqWzxdwZmcXkF"></script>
+	// <script type="text/javascript" src="http://developer.baidu.com/map/jsdemo/demo/changeMore.js"></script>
+	<script type="text/javascript" src="js/translate.js"></script>
+	<title>地图展示</title>
+	
+</head>
+
+<body>
+	<div id="allmap">
+	
+	</div>		
+</body>
+</html>
+
+<script type="text/javascript"> 			
+	'use strict';
+	
+	var sContent =
+	"<h4 style='margin:0 0 5px 0;padding:0.2em 0'>六盘水</h4>" + 
+	"<img style='float:right;margin:4px' id='imgDemo' src='http://app.baidu.com/map/images/tiananmen.jpg' width='139' height='104' title='天安门'/>" + 
+	"<p style='margin:0;line-height:1.5;font-size:13px;text-indent:2em'>六盘水是...</p>" + 
+	"</div>";
+	
+	// 百度地图API功能    
+	var x = 104.072213;
+    var y = 30.66348;
+	var centerPoint = new BMap.Point(x,y);
+	var level = 15;
+	var map = new BMap.Map("allmap"); 	
+		
+	//窗口加载完毕事件
+	window.onload = function(){			
+		map.centerAndZoom(point, level);  // 初始化地图,设置中心点坐标和地图级别
+		map.addControl(new BMap.MapTypeControl());   //添加地图类型控件
+		map.addControl(new BMap.NavigationControl()); //添加地图缩放控件
+		map.addControl(new BMap.ScaleControl()); //添加比例尺控件
+		map.setCurrentCity("成都");          // 设置地图显示的城市 此项是必须设置的
+		map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
+		
+		var overView = new BMap.OverviewMapControl();
+		var overViewOpen = new BMap.OverviewMapControl({isOpen:true, anchor: BMAP_ANCHOR_BOTTOM_RIGHT});
+		map.addControl(overView);          //添加默认缩略地图控件
+		map.addControl(overViewOpen);      //右下角，打开	
+		
+		var pt = BMap.Point(104.086016,30.659562);
+		DrawIcon(pt,14,14,map);
+		//map.addEventListener("click", showInfo);	
+		//addMarker(map,point);
+		DrawLines(map);
+		
+		map.addEventListener("tilesloaded",function(e){		
+			//alert("地图加载完毕");
+			//这里判断level的级别然后加上 逃生口图片
+				
+		});		
+		
+		ShowProjectInfo("imgDemo",centerPoint,sContent,level);	
+	}
+	
+		
+	
+	
+	
+
+	
+	
+	
+	
+	
+</script> 
