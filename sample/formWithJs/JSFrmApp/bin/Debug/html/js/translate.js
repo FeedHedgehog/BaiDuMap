@@ -218,8 +218,11 @@
 		  //map.panTo(pt1); 
 		  //alert("Icon added");
 		  var pt = BMap.Point(104.062947,30.665526);
-		  var myIcon = new BMap.Icon("http://developer.baidu.com/map/jsdemo/img/fox.gif", new BMap.Size(300,157));
+		  var myIcon = new BMap.Icon("http://developer.baidu.com/map/jsdemo/img/fox.gif", new BMap.Size(230,150));
 		  var marker2 = new BMap.Marker(newpoint,{icon:myIcon});  // 创建标注
+		  marker2.addEventListener("dblclick", function(){
+			  NavigateToU3D("啊客户端流口水风流快活");
+		  });
 	      map.addOverlay(marker2);              // 将标注添加到地图中
 	  }	  	 
   }
@@ -240,6 +243,18 @@
 	 //alert("showProjectInfo");
   }
 	
+  //此函数是与webBrowser交互的
+  //js到form窗体的
+  function NavigateToU3D(message){
+	  //alert("U3d");
+	  window.external.GetNavigateToU3DMessage(message);
+  }
+  
+  //
+  function PushDataToHtml(data){
+	  alert(data);
+	  return data;
+  }
 	
 	
 	

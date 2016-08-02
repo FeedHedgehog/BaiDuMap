@@ -1,0 +1,12 @@
+D:\2016\package\projects\CodeRepository\BaiDuMap\sample\formWithJs\JSFrmApp\JSFrmApp\bin\Debug\JSFrmApp.exe
+D:\2016\package\projects\CodeRepository\BaiDuMap\sample\formWithJs\JSFrmApp\JSFrmApp\bin\Debug\JSFrmApp.pdb
+D:\2016\package\projects\CodeRepository\BaiDuMap\sample\formWithJs\JSFrmApp\JSFrmApp\obj\Debug\JSFrmApp.csprojResolveAssemblyReference.cache
+D:\2016\package\projects\CodeRepository\BaiDuMap\sample\formWithJs\JSFrmApp\JSFrmApp\obj\Debug\JSFrmApp.Form1.resources
+D:\2016\package\projects\CodeRepository\BaiDuMap\sample\formWithJs\JSFrmApp\JSFrmApp\obj\Debug\JSFrmApp.Properties.Resources.resources
+D:\2016\package\projects\CodeRepository\BaiDuMap\sample\formWithJs\JSFrmApp\JSFrmApp\obj\Debug\JSFrmApp.csproj.GenerateResource.Cache
+D:\2016\package\projects\CodeRepository\BaiDuMap\sample\formWithJs\JSFrmApp\JSFrmApp\obj\Debug\JSFrmApp.exe
+D:\2016\package\projects\CodeRepository\BaiDuMap\sample\formWithJs\JSFrmApp\JSFrmApp\obj\Debug\JSFrmApp.pdb
+D:\2016\package\projects\CodeRepository\BaiDuMap\sample\formWithJs\JSFrmApp\JSFrmApp\obj\Debug\JSFrmApp.View.UserControl1.resources
+D:\2016\package\projects\CodeRepository\BaiDuMap\sample\formWithJs\JSFrmApp\bin\Debug\JSFrmApp.exe
+D:\2016\package\projects\CodeRepository\BaiDuMap\sample\formWithJs\JSFrmApp\bin\Debug\JSFrmApp.pdb
+D:\2016\package\projects\CodeRepository\BaiDuMap\sample\formWithJs\JSFrmApp\bin\Debug\JSFrmApp.exe.config
