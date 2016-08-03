@@ -31,7 +31,47 @@ namespace JSFrmApp
         {
             base.OnLoad(e);
 
-            //webBrowser1.AllowNavigation = true;
+            UiInitialize();
+
+            #region Event Register
+
+            btnLoad.ItemClick += BtnLoad_ItemClick;
+
+            #endregion
+        }
+
+        #region Events Response
+
+        private void BtnLoad_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            LogicLayer.Logic.Instance.InvokePushDataToHtmlMethod(webBrowser1);
+        }
+
+        #endregion
+
+        #region Public ExtentionMethods
+
+        /// <summary>
+        /// 前台Html中js调用的方法
+        /// </summary>
+        /// <param name="message"></param>
+        public void GetNavigateToU3DMessage(string message)
+        {
+            MessageBox.Show(message, "client code");
+            //this.Controls.Clear();
+            //var dsd = new UserControl1();
+            //dsd.Dock = DockStyle.Fill;
+
+            //this.Controls.Add(dsd);
+        }
+
+        #endregion
+
+        #region Methods
+
+        private void UiInitialize()
+        {
+            webBrowser1.AllowNavigation = true;
             webBrowser1.Url = new Uri(_htmlPath);
             webBrowser1.AllowWebBrowserDrop = false;
             webBrowser1.IsWebBrowserContextMenuEnabled = false;
@@ -47,25 +87,8 @@ namespace JSFrmApp
             //  "onclick=\"window.external.Test('called from script code')\">" +
             //  "call client code from script code</button>" +
             //  "</body></html>";  
-            button1.Click += Button1_Click;
         }
 
-        private void Button1_Click(object sender, EventArgs e)
-        {
-            LogicLayer.Logic.Instance.InvokePushDataToHtmlMethod(webBrowser1);
-        }
-
-
-        public void GetNavigateToU3DMessage(string message)
-        {
-            MessageBox.Show(message, "client code");
-            //this.Controls.Clear();
-            //var dsd = new UserControl1();
-            //dsd.Dock = DockStyle.Fill;
-
-            //this.Controls.Add(dsd);
-        }
-
-
+        #endregion
     }
 }
