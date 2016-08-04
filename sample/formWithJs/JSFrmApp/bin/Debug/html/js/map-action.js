@@ -160,26 +160,7 @@
 	"<p style='margin:0;line-height:1.5;font-size:13px;text-indent:2em'>六盘水是...</p>" + 
 	"</div>";
 	
-	var polylines = [
-	new BMap.Polyline([
-		  new BMap.Point(104.853864,26.598749),
-          new BMap.Point(104.848474,26.593128),
-          new BMap.Point(104.861553,26.58854),
-          new BMap.Point(104.864931,26.587829),
-          new BMap.Point(104.868165,26.58686),
-          new BMap.Point(104.869458,26.592223),
-          new BMap.Point(104.86989,26.593322),
-          new BMap.Point(104.860619,26.595841),
-          new BMap.Point(104.86141,26.597844),
-          new BMap.Point(104.858607,26.598943),
-          new BMap.Point(104.856738,26.598038),
-          new BMap.Point(104.855373,26.598167),
-          new BMap.Point(104.853792,26.598878),
-          new BMap.Point(104.853792,26.598878),
-          new BMap.Point(104.853792,26.598878),
-          new BMap.Point(104.853792,26.598878)
-		], {strokeColor:"blue", strokeWeight:20, strokeOpacity:0.5})
-	];
+	var polylines;
 		
 	function addMarkerInfoWindow(imgid,content,zoom){	
 		var pt = new BMap.Point(104.857483,26.597535);	
@@ -276,8 +257,29 @@
 	
 	
 	// 改变覆盖物状态  
-	function selectAction(){  	
-		alert("polylines.length:"+polylines.length);
+	function selectAction(){  
+		polylines = [
+			  new BMap.Polyline([
+			  new BMap.Point(104.853864,26.598749),
+			  new BMap.Point(104.848474,26.593128),
+			  new BMap.Point(104.861553,26.58854),
+			  new BMap.Point(104.864931,26.587829),
+			  new BMap.Point(104.868165,26.58686),
+			  new BMap.Point(104.869458,26.592223),
+			  new BMap.Point(104.86989,26.593322),
+			  new BMap.Point(104.860619,26.595841),
+			  new BMap.Point(104.86141,26.597844),
+			  new BMap.Point(104.858607,26.598943),
+			  new BMap.Point(104.856738,26.598038),
+			  new BMap.Point(104.855373,26.598167),
+			  new BMap.Point(104.853792,26.598878),
+			  new BMap.Point(104.853792,26.598878),
+			  new BMap.Point(104.853792,26.598878),
+			  new BMap.Point(104.853792,26.598878)
+			], {strokeColor:"blue", strokeWeight:20, strokeOpacity:0.5})
+		];
+	
+		//alert("polylines.length:"+polylines.length);
 		for (var i=0; i<polylines.length; i++)
 		{			
 			var style = polylines[i].getStrokeStyle();
@@ -296,21 +298,23 @@
 	}  
 
 	function unselectAction(){	
-		for (var i=0; i<polylines.length; i++)
-		{
-			var style = polylines[i].getStrokeStyle();
-			if(style == "solid"){
-				polylines[i].setStrokeColor("blue");  
-				polylines[i].setStrokeOpacity(0.5);
-				map.clearOverlays();
-				map.addOverlay(polylines[i]);
-				//alert("solied,and opacity is"+polylines[i].getStrokeOpacity());
+	    if(polylines!=null || polylines.length>0){
+			for (var i=0; i<polylines.length; i++)
+			{
+				var style = polylines[i].getStrokeStyle();
+				if(style == "solid"){
+					polylines[i].setStrokeColor("blue");  
+					polylines[i].setStrokeOpacity(0.5);
+					map.clearOverlays();
+					map.addOverlay(polylines[i]);
+					//alert("solied,and opacity is"+polylines[i].getStrokeOpacity());
+				}
+				else if(style == "dashed"){
+					//alert("dashed");
+					polylines[i].setStrokeColor("yellow"); 
+				}
 			}
-			else if(style == "dashed"){
-				//alert("dashed");
-				polylines[i].setStrokeColor("yellow"); 
-			}
-		}
+		}		
 	}
   
   

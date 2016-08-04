@@ -37,11 +37,25 @@ namespace JSFrmApp
             #region Event Register
 
             btnLoad.ItemClick += BtnLoad_ItemClick;
+            webBrowser1.DocumentCompleted += WebBrowser1_DocumentCompleted;
 
             #endregion
         }
 
         #region Events Response
+
+        private void WebBrowser1_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
+        {
+            ((WebBrowser)sender).Document.Window.Error += Window_Error;
+        }
+
+        private void Window_Error(object sender, HtmlElementErrorEventArgs e)
+        {
+            // Ignore the error and suppress the error dialog box. 
+            var se = sender;
+            MessageBox.Show(string.Format("错误URL：{0},错误代码行号：{1},错误的详细信息：{2}", e.Url, e.LineNumber, e.Description), "系统提示：");
+            //e.Handled = true;
+        }
 
         private void BtnLoad_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
@@ -79,7 +93,7 @@ namespace JSFrmApp
             webBrowser1.WebBrowserShortcutsEnabled = false;
             webBrowser1.ObjectForScripting = this;
             // Uncomment the following line when you are finished debugging.
-            webBrowser1.ScriptErrorsSuppressed = true;
+            webBrowser1.ScriptErrorsSuppressed = false;
 
             //webBrowser1.DocumentText =
             //  "<html><head><script>" +
@@ -88,7 +102,7 @@ namespace JSFrmApp
             //  "onclick=\"window.external.Test('called from script code')\">" +
             //  "call client code from script code</button>" +
             //  "</body></html>";  
-            List<Line> lines=new List<Line>()
+            List<Line> lines = new List<Line>()
             {
                 new Line() {ID="00",Name = "管廊主体",Opacity = "0.5",Points = null,Type = "solid",Width = "20"},
                 new Line() {ID="01",Name = "左边逃生口",Opacity = "0.5",Points = null,Type = "solid",Width = "20"},
