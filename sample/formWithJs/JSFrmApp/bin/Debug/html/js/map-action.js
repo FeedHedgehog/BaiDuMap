@@ -277,8 +277,9 @@
 	
 	// 改变覆盖物状态  
 	function selectAction(){  	
+		alert("polylines.length:"+polylines.length);
 		for (var i=0; i<polylines.length; i++)
-		{
+		{			
 			var style = polylines[i].getStrokeStyle();
 			if(style == "solid"){
 				polylines[i].setStrokeColor("green");  

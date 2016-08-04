@@ -31,6 +31,9 @@
             this.components = new System.ComponentModel.Container();
             this.webBrowser1 = new System.Windows.Forms.WebBrowser();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.treeList_lines = new DevExpress.XtraTreeList.TreeList();
+            this.treeListColumn1 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
+            this.treeListColumn2 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar2 = new DevExpress.XtraBars.Bar();
             this.btnLoad = new DevExpress.XtraBars.BarButtonItem();
@@ -41,8 +44,10 @@
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.treeList_lines)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -61,12 +66,49 @@
             this.splitContainer1.Location = new System.Drawing.Point(0, 24);
             this.splitContainer1.Name = "splitContainer1";
             // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.treeList_lines);
+            // 
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.webBrowser1);
             this.splitContainer1.Size = new System.Drawing.Size(893, 443);
             this.splitContainer1.SplitterDistance = 297;
             this.splitContainer1.TabIndex = 2;
+            // 
+            // treeList_lines
+            // 
+            this.treeList_lines.Columns.AddRange(new DevExpress.XtraTreeList.Columns.TreeListColumn[] {
+            this.treeListColumn1,
+            this.treeListColumn2});
+            this.treeList_lines.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.treeList_lines.Location = new System.Drawing.Point(0, 0);
+            this.treeList_lines.Name = "treeList_lines";
+            this.treeList_lines.Size = new System.Drawing.Size(297, 443);
+            this.treeList_lines.TabIndex = 0;
+            // 
+            // treeListColumn1
+            // 
+            this.treeListColumn1.Caption = "名称";
+            this.treeListColumn1.FieldName = "Name";
+            this.treeListColumn1.Name = "treeListColumn1";
+            this.treeListColumn1.OptionsColumn.AllowEdit = false;
+            this.treeListColumn1.OptionsColumn.AllowMove = false;
+            this.treeListColumn1.OptionsColumn.ReadOnly = true;
+            this.treeListColumn1.Visible = true;
+            this.treeListColumn1.VisibleIndex = 0;
+            // 
+            // treeListColumn2
+            // 
+            this.treeListColumn2.Caption = "类型";
+            this.treeListColumn2.FieldName = "Type";
+            this.treeListColumn2.Name = "treeListColumn2";
+            this.treeListColumn2.OptionsColumn.AllowEdit = false;
+            this.treeListColumn2.OptionsColumn.AllowMove = false;
+            this.treeListColumn2.OptionsColumn.ReadOnly = true;
+            this.treeListColumn2.Visible = true;
+            this.treeListColumn2.VisibleIndex = 1;
             // 
             // barManager1
             // 
@@ -165,9 +207,11 @@
             this.Controls.Add(this.barDockControlTop);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.treeList_lines)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -187,6 +231,9 @@
         private DevExpress.XtraBars.BarDockControl barDockControlRight;
         private DevExpress.XtraBars.BarButtonItem btnLoad;
         private DevExpress.XtraBars.BarStaticItem barStaticItem1;
+        private DevExpress.XtraTreeList.TreeList treeList_lines;
+        private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumn1;
+        private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumn2;
     }
 }
 

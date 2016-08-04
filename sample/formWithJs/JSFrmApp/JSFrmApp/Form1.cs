@@ -14,6 +14,7 @@ using System.Security.Permissions;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using JS.Model;
 
 namespace JSFrmApp
 {
@@ -87,6 +88,21 @@ namespace JSFrmApp
             //  "onclick=\"window.external.Test('called from script code')\">" +
             //  "call client code from script code</button>" +
             //  "</body></html>";  
+            List<Line> lines=new List<Line>()
+            {
+                new Line() {ID="00",Name = "管廊主体",Opacity = "0.5",Points = null,Type = "solid",Width = "20"},
+                new Line() {ID="01",Name = "左边逃生口",Opacity = "0.5",Points = null,Type = "solid",Width = "20"},
+                new Line() {ID="02",Name = "右边逃生口",Opacity = "0.5",Points = null,Type = "solid",Width = "20"},
+                new Line() {ID="03",Name = "通风口",Opacity = "0.5",Points = null,Type = "solid",Width = "20"},
+            };
+            BindTreeData(lines);
+        }
+
+        private void BindTreeData(List<Line> lines)
+        {
+            treeList_lines.BeginUpdate();
+            treeList_lines.DataSource = lines;
+            treeList_lines.EndUpdate();
         }
 
         #endregion
