@@ -1,0 +1,3 @@
+﻿JS.Model 类库 为公用的Model层
+这里将地图上的线条抽象成为Line对象，和对应的Point对象
+线条Line是由若干个Point对象组成
