@@ -1,31 +1,157 @@
-﻿'use strict';
+﻿    'use strict';
 
-//创建和初始化地图函数：
+    //create  and initialize the baidu map.
     function initMap(){
-      createMap();//创建地图
-      setMapEvent();//设置地图事件
-      addMapControl();//向地图添加控件
-      addMapOverlay();//向地图添加覆盖物
+		//create the baidu map
+      createMap();
+	  //set map's events
+      setMapEvent();
+	  //add the controls to baidu map
+      addMapControl();
+	  
     }
+	
+	//set the center of the map for "六盘水市"
     function createMap(){ 
       map = new BMap.Map("allmap"); 
-      map.centerAndZoom(new BMap.Point(104.870896,26.594743),15);
+      map.centerAndZoom(new BMap.Point(104.072222,30.663484),15);
+	  window.setTimeout(function(){   
+		   map.panTo(new BMap.Point(104.870896,26.594743));   
+	  }, 2000);
     }
+	
+	//set map's events
     function setMapEvent(){
       map.enableScrollWheelZoom();
       map.enableKeyboard();
       map.enableDragging();
       map.enableDoubleClickZoom()
+      //custom events
+	  addZoomEndHandler(15);	  
     }
+	
+	//add ClickEvent for tartget,and after that,open the InfoWindow which passed on
     function addClickHandler(target,window){
       target.addEventListener("click",function(){
         target.openInfoWindow(window);
       });
     }
+	
+	//when map zoom to the certain level,it will invoke the addMapOverlay method
+	function addZoomEndHandler(inputzoom){
+		map.addEventListener("zoomend",function(){
+			//get the current zoom of the map
+			var currentzoom = map.getZoom();
+			//alert("当前的zoom:"+currentzoom);
+			if(currentzoom >= inputzoom){
+				//alert("at zoom:"+currentzoom+"zoomended!");
+				//add the overlays to baidu map
+				//addMapOverlay();
+				addCustomPolyline(true);
+				
+				addMarkerInfoWindow("imgDemo",sContent,inputzoom);				
+			}	
+			else{
+				addCustomPolyline(false);
+			}			
+		});
+	}
+	
+	//画多边形
+	function addCustomPolyline(isShow){
+		var polyline = new BMap.Polyline([
+		  new BMap.Point(104.853864,26.598749),
+          new BMap.Point(104.848474,26.593128),
+          new BMap.Point(104.861553,26.58854),
+          new BMap.Point(104.864931,26.587829),
+          new BMap.Point(104.868165,26.58686),
+          new BMap.Point(104.869458,26.592223),
+          new BMap.Point(104.86989,26.593322),
+          new BMap.Point(104.860619,26.595841),
+          new BMap.Point(104.86141,26.597844),
+          new BMap.Point(104.858607,26.598943),
+          new BMap.Point(104.856738,26.598038),
+          new BMap.Point(104.855373,26.598167),
+          new BMap.Point(104.853792,26.598878),
+          new BMap.Point(104.853792,26.598878),
+          new BMap.Point(104.853792,26.598878),
+          new BMap.Point(104.853792,26.598878)
+		], {strokeColor:"blue", strokeWeight:20, strokeOpacity:0.5});   
+		if(isShow){
+			var pt1 = new BMap.Point(104.85044,26.595524);			
+			addPolylineLabel(pt1,"100m");
+			
+			var pt2 = new BMap.Point(104.850979,26.595904);			
+			addPolylineLabel(pt2,"120m");
+			
+			map.clearOverlays();			
+			map.addOverlay(polyline); 	
+			polyline.addEventListener("click",getAttr);
+			polyline.show();
+		}
+		else{
+			map.clearOverlays();			
+			polyline.hide();
+		}		
+		//alert(isShow);
+	}
+	
+	function getAttr(){
+			
+	}
+	
+	//add label to Polyline
+	function addPolylineLabel(point,content){		
+		var opts = {
+			  position : point,    // 指定文本标注所在的地理位置
+			  offset   : new BMap.Size(0, 0)    //设置文本偏移量
+		}
+		var label = new BMap.Label(content, opts);  // 创建文本标注对象
+			label.setStyle({
+				 color : "red",
+				 fontSize : "12px",
+				 height : "20px",
+				 lineHeight : "20px",
+				 fontFamily:"微软雅黑"
+		});
+		//禁止覆盖物在map.clearOverlays方法中被清除
+		label.disableMassClear();
+		map.addOverlay(label); 
+
+	}
+	
+	var sContent =
+	"<h4 style='margin:0 0 5px 0;padding:0.2em 0'>六盘水</h4>" + 
+	"<img style='float:right;margin:4px' id='imgDemo' src='http://app.baidu.com/map/images/tiananmen.jpg' width='139' height='104' title='天安门'/>" + 
+	"<p style='margin:0;line-height:1.5;font-size:13px;text-indent:2em'>六盘水是...</p>" + 
+	"</div>";
+		
+	function addMarkerInfoWindow(imgid,content,zoom){	
+		var pt = new BMap.Point(104.857483,26.597535);	
+		//alert(content);
+		var cyIcon = new BMap.Icon("image/est.png", new BMap.Size(50, 63), {
+                  anchor: new BMap.Size(10, 30),
+                 infoWindowAnchor: new BMap.Size(25, 0)
+             });
+		var marker = new BMap.Marker(pt, { icon: cyIcon });  //创建标注		
+	    var infoWindow = new BMap.InfoWindow(content);  // 创建信息窗口对象
+	    map.centerAndZoom(pt, zoom);
+		map.clearOverlays();
+	    map.addOverlay(marker);
+	    marker.addEventListener("click", function(){          
+	         this.openInfoWindow(infoWindow);
+	         //图片加载完毕重绘infowindow
+	         document.getElementById(imgid).onload=function(){
+		          infoWindow.redraw();   //防止在网速较慢，图片未加载时，生成的信息框高度比图片的总高度小，导致图片部分被隐藏
+	         }
+	    });
+	}
+	
+	//add the overlays to baidu map
     function addMapOverlay(){
       var markers = [
         {content:"六盘水项目，撒了多久啊了dhl",title:"六盘水项目部",imageOffset: {width:0,height:3},position:{lat:26.597521,lng:104.856164}}
-      ];
+      ];	  
       for(var index = 0; index < markers.length; index++ ){
         var point = new BMap.Point(markers[index].position.lng,markers[index].position.lat);
         var marker = new BMap.Marker(point,{icon:new BMap.Icon("http://api.map.baidu.com/lbsapi/createmap/images/icon.png",new BMap.Size(20,25),{
@@ -41,6 +167,7 @@
         marker.setLabel(label);
         addClickHandler(marker,infoWindow);
         map.addOverlay(marker);
+		marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
       };
       var labels = [
         {position:{lng:104.875567,lat:26.601462},content:"这个是文字标注"}
@@ -78,7 +205,8 @@
         map.addOverlay(polyline);
       }
     }
-    //向地图添加控件
+	
+    //add the controls to baidu map
     function addMapControl(){
       var scaleControl = new BMap.ScaleControl({anchor:BMAP_ANCHOR_BOTTOM_LEFT});
       scaleControl.setUnit(BMAP_UNIT_IMPERIAL);
@@ -88,3 +216,53 @@
       var overviewControl = new BMap.OverviewMapControl({anchor:BMAP_ANCHOR_BOTTOM_RIGHT,isOpen:true});
       map.addControl(overviewControl);
     }
+	
+	
+	
+	
+	// 改变覆盖物状态  
+function change(){  
+	var polylines = [
+	new BMap.Polyline([
+		  new BMap.Point(104.853864,26.598749),
+          new BMap.Point(104.848474,26.593128),
+          new BMap.Point(104.861553,26.58854),
+          new BMap.Point(104.864931,26.587829),
+          new BMap.Point(104.868165,26.58686),
+          new BMap.Point(104.869458,26.592223),
+          new BMap.Point(104.86989,26.593322),
+          new BMap.Point(104.860619,26.595841),
+          new BMap.Point(104.86141,26.597844),
+          new BMap.Point(104.858607,26.598943),
+          new BMap.Point(104.856738,26.598038),
+          new BMap.Point(104.855373,26.598167),
+          new BMap.Point(104.853792,26.598878),
+          new BMap.Point(104.853792,26.598878),
+          new BMap.Point(104.853792,26.598878),
+          new BMap.Point(104.853792,26.598878)
+		], {strokeColor:"blue", strokeWeight:20, strokeOpacity:0.5})
+	];
+	for (var i=0; i<polylines.length; i++)
+	{
+		var style = polylines[i].getStrokeStyle();
+		if(style == "solid"){
+			polylines[i].setStrokeColor("green");  
+			polylines[i].setStrokeOpacity(1);
+			alert("solied,and opacity is"+polylines[i].getStrokeOpacity());
+		}
+		else if(style == "dashed"){
+			alert("dashed");
+			polylines[i].setStrokeColor("yellow"); 
+		}
+	}
+}  
+  
+
+	
+	
+	
+	
+	
+	
+	
+	

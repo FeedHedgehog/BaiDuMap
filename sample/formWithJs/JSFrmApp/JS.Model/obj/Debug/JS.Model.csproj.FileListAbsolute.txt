@@ -1,0 +1,5 @@
+D:\2016\package\projects\CodeRepository\BaiDuMap\sample\formWithJs\JSFrmApp\JS.Model\bin\Debug\JS.Model.dll
+D:\2016\package\projects\CodeRepository\BaiDuMap\sample\formWithJs\JSFrmApp\JS.Model\bin\Debug\JS.Model.pdb
+D:\2016\package\projects\CodeRepository\BaiDuMap\sample\formWithJs\JSFrmApp\JS.Model\obj\Debug\JS.Model.csprojResolveAssemblyReference.cache
+D:\2016\package\projects\CodeRepository\BaiDuMap\sample\formWithJs\JSFrmApp\JS.Model\obj\Debug\JS.Model.dll
+D:\2016\package\projects\CodeRepository\BaiDuMap\sample\formWithJs\JSFrmApp\JS.Model\obj\Debug\JS.Model.pdb

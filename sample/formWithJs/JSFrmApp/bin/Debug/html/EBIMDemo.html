@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -12,19 +12,18 @@
     <!--引用百度地图API-->
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=fsYq13sB9k3aO9wW0rosqWzxdwZmcXkF"></script>
 	<script type="text/javascript" src="js/map-action.js"></script>
-	<!-- <script type="text/javascript" src="js/jquery-3.1.0.js"></script> -->
+	<script type="text/javascript" src="js/jquery-3.1.0.js"></script> 
   </head>
   
   <body>
+    <div style="postion:absoulte;left:0;top:0;"><a href="javascript:change();">ChangeColor</a></div>  
     <!--百度地图容器-->
-    <div id="allmap"></div>
-    
+    <div id="allmap">	    
+	</div>    
   </body>
-  
 </html>
 
 <script type="text/javascript">
-
-    var map;
-      initMap();
-  </script>
+	var map;
+	initMap();
+</script>  	
