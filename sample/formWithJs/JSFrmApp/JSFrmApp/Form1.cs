@@ -21,7 +21,7 @@ namespace JSFrmApp
     [System.Runtime.InteropServices.ComVisibleAttribute(true)]
     public partial class Form1 : Form
     {
-        private string _htmlPath = Application.StartupPath + "/html/EBIM.html";
+        private string _htmlPath = Application.StartupPath + "/html/EBIMDemo.html";
         public Form1()
         {
             InitializeComponent();
@@ -52,7 +52,7 @@ namespace JSFrmApp
         #region Public ExtentionMethods
 
         /// <summary>
-        /// 前台Html中js调用的方法
+        /// 前台Html中js调用的方法,网页操作cs窗体
         /// </summary>
         /// <param name="message"></param>
         public void GetNavigateToU3DMessage(string message)

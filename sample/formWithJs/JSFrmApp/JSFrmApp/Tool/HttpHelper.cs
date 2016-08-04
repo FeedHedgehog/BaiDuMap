@@ -66,137 +66,147 @@ namespace JSFrmApp.Tool
         /// <returns></returns>  
         public string PostForm(string url, List<FormItemModel> formItems, CookieContainer cookieContainer = null, string refererUrl = null, Encoding encoding = null, int timeout = 300)
         {
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-            #region 初始化请求对象
-            request.Method = "POST";
-            request.Timeout = timeout * 1000;
-            request.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8";
-            request.KeepAlive = true;
-            request.UserAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.57 Safari/537.36";
-            if (!string.IsNullOrEmpty(refererUrl))
-                request.Referer = refererUrl;
-            if (cookieContainer != null)
-                request.CookieContainer = cookieContainer;
-            else
+            try
             {
-                request.CookieContainer = new CookieContainer();
-                request.CookieContainer.Add(Cookies);
-            }
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
 
+                #region 初始化请求对象
 
-            #endregion
-
-            string boundary = "----" + DateTime.Now.Ticks.ToString("x");//分隔符  
-            request.ContentType = string.Format("multipart/form-data; boundary={0}", boundary);
-            //请求流  
-            var postStream = new MemoryStream();
-            #region 处理Form表单请求内容
-            //是否用Form上传文件  
-            var formUploadFile = formItems != null && formItems.Count > 0;
-            if (formUploadFile)
-            {
-                //文件数据模板  
-                string fileFormdataTemplate =
-                    "\r\n--" + boundary +
-                    "\r\nContent-Disposition: form-data; name=\"{0}\"; filename=\"{1}\"" +
-                    "\r\nContent-Type: application/octet-stream" +
-                    "\r\n\r\n";
-                //文本数据模板  
-                string dataFormdataTemplate =
-                    "\r\n--" + boundary +
-                    "\r\nContent-Disposition: form-data; name=\"{0}\"" +
-                    "\r\n\r\n{1}";
-                foreach (var item in formItems)
+                request.Method = "POST";
+                request.Timeout = timeout * 1000;
+                request.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8";
+                request.KeepAlive = true;
+                request.UserAgent =
+                    "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.57 Safari/537.36";
+                if (!string.IsNullOrEmpty(refererUrl))
+                    request.Referer = refererUrl;
+                if (cookieContainer != null)
+                    request.CookieContainer = cookieContainer;
+                else
                 {
-                    string formdata = null;
-                    if (item.IsFile)
-                    {
-                        //上传文件  
-                        formdata = string.Format(
-                            fileFormdataTemplate,
-                            item.Key, //表单键  
-                            item.FileName);
-                    }
-                    else
-                    {
-                        //上传文本  
-                        formdata = string.Format(
-                            dataFormdataTemplate,
-                            item.Key,
-                            item.Value);
-                    }
+                    request.CookieContainer = new CookieContainer();
+                    request.CookieContainer.Add(Cookies);
+                }
 
-                    //统一处理  
-                    byte[] formdataBytes = null;
-                    //第一行不需要换行  
-                    if (postStream.Length == 0)
-                        formdataBytes = Encoding.UTF8.GetBytes(formdata.Substring(2, formdata.Length - 2));
-                    else
-                        formdataBytes = Encoding.UTF8.GetBytes(formdata);
-                    postStream.Write(formdataBytes, 0, formdataBytes.Length);
 
-                    //写入文件内容  
-                    if (item.FileContent != null && item.FileContent.Length > 0)
+                #endregion
+
+                string boundary = "----" + DateTime.Now.Ticks.ToString("x"); //分隔符  
+                request.ContentType = string.Format("multipart/form-data; boundary={0}", boundary);
+                //请求流  
+                var postStream = new MemoryStream();
+
+                #region 处理Form表单请求内容
+
+                //是否用Form上传文件  
+                var formUploadFile = formItems != null && formItems.Count > 0;
+                if (formUploadFile)
+                {
+                    //文件数据模板  
+                    string fileFormdataTemplate =
+                        "\r\n--" + boundary +
+                        "\r\nContent-Disposition: form-data; name=\"{0}\"; filename=\"{1}\"" +
+                        "\r\nContent-Type: application/octet-stream" +
+                        "\r\n\r\n";
+                    //文本数据模板  
+                    string dataFormdataTemplate =
+                        "\r\n--" + boundary +
+                        "\r\nContent-Disposition: form-data; name=\"{0}\"" +
+                        "\r\n\r\n{1}";
+                    foreach (var item in formItems)
                     {
-                        using (var stream = item.FileContent)
+                        string formdata = null;
+                        if (item.IsFile)
                         {
-                            byte[] buffer = new byte[40960];
-                            int bytesRead = 0;
-                            while ((bytesRead = stream.Read(buffer, 0, buffer.Length)) != 0)
+                            //上传文件  
+                            formdata = string.Format(
+                                fileFormdataTemplate,
+                                item.Key, //表单键  
+                                item.FileName);
+                        }
+                        else
+                        {
+                            //上传文本  
+                            formdata = string.Format(
+                                dataFormdataTemplate,
+                                item.Key,
+                                item.Value);
+                        }
+
+                        //统一处理  
+                        byte[] formdataBytes = null;
+                        //第一行不需要换行  
+                        if (postStream.Length == 0)
+                            formdataBytes = Encoding.UTF8.GetBytes(formdata.Substring(2, formdata.Length - 2));
+                        else
+                            formdataBytes = Encoding.UTF8.GetBytes(formdata);
+                        postStream.Write(formdataBytes, 0, formdataBytes.Length);
+
+                        //写入文件内容  
+                        if (item.FileContent != null && item.FileContent.Length > 0)
+                        {
+                            using (var stream = item.FileContent)
                             {
-                                postStream.Write(buffer, 0, bytesRead);
+                                byte[] buffer = new byte[40960];
+                                int bytesRead = 0;
+                                while ((bytesRead = stream.Read(buffer, 0, buffer.Length)) != 0)
+                                {
+                                    postStream.Write(buffer, 0, bytesRead);
+                                }
                             }
                         }
                     }
+                    //结尾  
+                    var footer = Encoding.UTF8.GetBytes("\r\n--" + boundary + "--\r\n");
+                    postStream.Write(footer, 0, footer.Length);
+
                 }
-                //结尾  
-                var footer = Encoding.UTF8.GetBytes("\r\n--" + boundary + "--\r\n");
-                postStream.Write(footer, 0, footer.Length);
-
-            }
-            else
-            {
-                request.ContentType = "application/x-www-form-urlencoded";
-            }
-            #endregion
-
-            request.ContentLength = postStream.Length;
-
-            #region 输入二进制流
-            if (postStream != null)
-            {
-                postStream.Position = 0;
-                //直接写入流  
-                Stream requestStream = request.GetRequestStream();
-
-                byte[] buffer = new byte[40960];
-                int bytesRead = 0;
-                while ((bytesRead = postStream.Read(buffer, 0, buffer.Length)) != 0)
+                else
                 {
-                    requestStream.Write(buffer, 0, bytesRead);
+                    request.ContentType = "application/x-www-form-urlencoded";
                 }
 
-                ////debug  
-                //postStream.Seek(0, SeekOrigin.Begin);  
-                //StreamReader sr = new StreamReader(postStream);  
-                //var postStr = sr.ReadToEnd();  
-                postStream.Close();//关闭文件访问  
-            }
-            #endregion
+                #endregion
 
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-            if (cookieContainer != null)
-            {
-                response.Cookies = cookieContainer.GetCookies(response.ResponseUri);
-            }
+                request.ContentLength = postStream.Length;
 
-            using (Stream responseStream = response.GetResponseStream())
-            {
-                using (StreamReader myStreamReader = new StreamReader(responseStream, encoding ?? Encoding.UTF8))
+                #region 输入二进制流
+
+                if (postStream != null)
                 {
-                    string retString = myStreamReader.ReadToEnd();
-                    return retString;
+                    postStream.Position = 0;
+                    //直接写入流  
+                    Stream requestStream = request.GetRequestStream();
+
+                    byte[] buffer = new byte[40960];
+                    int bytesRead = 0;
+                    while ((bytesRead = postStream.Read(buffer, 0, buffer.Length)) != 0)
+                    {
+                        requestStream.Write(buffer, 0, bytesRead);
+                    }
+                    postStream.Close(); //关闭文件访问  
                 }
+
+                #endregion
+
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                if (cookieContainer != null)
+                {
+                    response.Cookies = cookieContainer.GetCookies(response.ResponseUri);
+                }
+
+                using (Stream responseStream = response.GetResponseStream())
+                {
+                    using (StreamReader myStreamReader = new StreamReader(responseStream, encoding ?? Encoding.UTF8))
+                    {
+                        string retString = myStreamReader.ReadToEnd();
+                        return retString;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                return "";
             }
         }
 
@@ -236,6 +246,7 @@ namespace JSFrmApp.Tool
         }
 
         #endregion
+
         /// <summary>  
         /// 创建GET方式的HTTP请求  
         /// </summary>  
@@ -249,94 +260,90 @@ namespace JSFrmApp.Tool
             , string Referer = "", Dictionary<string, string> headers = null,
             string contentType = "application/x-www-form-urlencoded")
         {
-            if (Debug)
+            HttpWebRequest request = null;
+            HttpWebResponse v = null;
+            string retvalue = "";
+            try
             {
-                Console.Write("Start Get Url:{0}    ", url);
-            }
-
-            if (string.IsNullOrEmpty(url))
-            {
-                throw new ArgumentNullException("url");
-            }
-
-            HttpWebRequest request;
-            if (url.StartsWith("https", StringComparison.OrdinalIgnoreCase))
-            {
-                ServicePointManager.ServerCertificateValidationCallback =
-                    new RemoteCertificateValidationCallback(CheckValidationResult);
-                request = WebRequest.Create(url) as HttpWebRequest;
-                request.ProtocolVersion = HttpVersion.Version10;
-            }
-            else
-            {
-                request = WebRequest.Create(url) as HttpWebRequest;
-            }
-
-            if (Proxy != null)
-            {
-                request.Proxy = Proxy;
-            }
-
-            request.Method = "GET";
-            request.Headers["Pragma"] = "no-cache";
-            request.Accept = "text/html, application/xhtml+xml, */*";
-            //request.Headers["Accept-Language"] = "en-US,en;q=0.5";
-            request.Headers.Add("Accept-Language", "zh-CN");
-
-            request.ContentType = contentType;
-
-            request.UserAgent = DefaultUserAgent;
-            request.Referer = Referer;
-
-            if (headers != null)
-            {
-                foreach (var header in headers)
+                if (string.IsNullOrEmpty(url))
                 {
-                    request.Headers.Add(header.Key, header.Value);
+                    throw new ArgumentNullException("url");
                 }
-            }
-            if (!string.IsNullOrEmpty(userAgent))
-            {
-                request.UserAgent = userAgent;
-            }
-            if (timeout.HasValue)
-            {
-                request.Timeout = timeout.Value * 1000;
-            }
-            if (cookies != null)
-            {
-                request.CookieContainer = new CookieContainer();
-                request.CookieContainer.Add(cookies);
-            }
-            else
-            {
-                request.CookieContainer = new CookieContainer();
-                request.CookieContainer.Add(Cookies);
-            }
-
-            if (!(parameters == null || parameters.Count == 0))
-            {
-                var buffer = CreateParameter(parameters);
-
-
-                UTF8Encoding requestEncoding = new UTF8Encoding();
-
-                byte[] data = requestEncoding.GetBytes(buffer.ToString());
-                using (Stream stream = request.GetRequestStream())
+                if (url.StartsWith("https", StringComparison.OrdinalIgnoreCase))
                 {
-                    stream.Write(data, 0, data.Length);
+                    ServicePointManager.ServerCertificateValidationCallback =
+                        new RemoteCertificateValidationCallback(CheckValidationResult);
+                    request = WebRequest.Create(url) as HttpWebRequest;
+                    request.ProtocolVersion = HttpVersion.Version10;
                 }
+                else
+                {
+                    request = WebRequest.Create(url) as HttpWebRequest;
+                }
+
+                if (Proxy != null)
+                {
+                    request.Proxy = Proxy;
+                }
+
+                request.Method = "GET";
+                request.Headers["Pragma"] = "no-cache";
+                request.Accept = "text/html, application/xhtml+xml, */*";
+                //request.Headers["Accept-Language"] = "en-US,en;q=0.5";
+                request.Headers.Add("Accept-Language", "zh-CN");
+
+                request.ContentType = contentType;
+
+                request.UserAgent = DefaultUserAgent;
+                request.Referer = Referer;
+
+                if (headers != null)
+                {
+                    foreach (var header in headers)
+                    {
+                        request.Headers.Add(header.Key, header.Value);
+                    }
+                }
+                if (!string.IsNullOrEmpty(userAgent))
+                {
+                    request.UserAgent = userAgent;
+                }
+                if (timeout.HasValue)
+                {
+                    request.Timeout = timeout.Value * 1000;
+                }
+                if (cookies != null)
+                {
+                    request.CookieContainer = new CookieContainer();
+                    request.CookieContainer.Add(cookies);
+                }
+                else
+                {
+                    request.CookieContainer = new CookieContainer();
+                    request.CookieContainer.Add(Cookies);
+                }
+
+                if (!(parameters == null || parameters.Count == 0))
+                {
+                    var buffer = CreateParameter(parameters);
+
+
+                    UTF8Encoding requestEncoding = new UTF8Encoding();
+
+                    byte[] data = requestEncoding.GetBytes(buffer.ToString());
+                    using (Stream stream = request.GetRequestStream())
+                    {
+                        stream.Write(data, 0, data.Length);
+                    }
+                }
+
+                v = request.GetResponse() as HttpWebResponse;
+                v.Cookies = request.CookieContainer.GetCookies(request.RequestUri);
+                Cookies.Add(request.CookieContainer.GetCookies(request.RequestUri));
             }
-
-            var v = request.GetResponse() as HttpWebResponse;
-            v.Cookies = request.CookieContainer.GetCookies(request.RequestUri);
-            Cookies.Add(request.CookieContainer.GetCookies(request.RequestUri));
-            //Cookies.Add(request.CookieContainer.GetCookies(new Uri("https://" + new Uri(url).Host)));
-            //Cookies.Add(v.Cookies);
-
-            if (Debug)
+            catch (Exception)
             {
-                Console.WriteLine("OK");
+                return null;
             }
 
             return v;
@@ -1311,7 +1318,7 @@ namespace JSFrmApp.Tool
 
             try
             {
-                using (StreamReader reader = new StreamReader(response.GetResponseStream(), responseEncoding))
+                using (StreamReader reader = new StreamReader(response.GetResponseStream(), Encoding.UTF8))
                 {
                     return reader.ReadToEnd();
                 }
@@ -1343,7 +1350,7 @@ namespace JSFrmApp.Tool
 
             try
             {
-                using (StreamReader reader = new StreamReader(response.GetResponseStream(), responseEncoding))
+                using (StreamReader reader = new StreamReader(response.GetResponseStream(), Encoding.UTF8))
                 {
                     return reader.ReadToEnd();
                 }
@@ -1393,13 +1400,14 @@ namespace JSFrmApp.Tool
 
             try
             {
-                using (StreamReader reader = new StreamReader(response.GetResponseStream(), responseEncoding))
+                using (StreamReader reader = new StreamReader(response.GetResponseStream(), Encoding.UTF8))
                 {
                     return reader.ReadToEnd();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                //MessageBox.Show(ex.Message);
                 return null;
             }
         }

@@ -13,11 +13,13 @@ namespace JS.Model
     [DataContract]
     public class Point
     {
-        [DataMember]
+        [DataMember]        
         public string ID { get; set; }
         [DataMember]
         public string Longitude { get; set; }
         [DataMember]
         public string Latitude { get; set; }
+        [DataMember]
+        public string Color { get; set; }
     }
 }

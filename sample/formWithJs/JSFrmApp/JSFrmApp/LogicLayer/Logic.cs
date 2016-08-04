@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Windows.Forms;
+using JS.Model;
 
 namespace JSFrmApp.LogicLayer
 {
@@ -42,10 +43,10 @@ namespace JSFrmApp.LogicLayer
                 Object[] objArray = new Object[1];
                 objArray[0] = (Object)data;
                 var oSum = webBrowser.Document.InvokeScript("PushDataToHtml", objArray);
-                if (oSum != null)
-                {
-                    MessageBox.Show(oSum.ToString());
-                }
+                //if (oSum != null)
+                //{
+                //    MessageBox.Show(oSum.ToString());
+                //}
 
             }
         }
@@ -68,15 +69,7 @@ namespace JSFrmApp.LogicLayer
                 parameters.Add("remember_me", "on");
                 parameters.Add("j_type", "mobile");
 
-                HttpWebResponse response = HttpHelper.Instance.CreatePostHttpResponse(url,
-                    parameters, null, 20000, "", null, null, null);
-                if (response == null)
-                {
-                    result = string.Empty;
-                }
-
-                String xml = new StreamReader(response.GetResponseStream(), Encoding.UTF8).ReadToEnd();
-
+                String xml = HttpHelper.Instance.Post(url, parameters, null, null, 2000, "", null, null, null);
                 JObject jo = (JObject)JsonConvert.DeserializeObject(xml);
 
                 string loginstate = jo["state"]["code"].ToString();
@@ -133,6 +126,18 @@ namespace JSFrmApp.LogicLayer
             {
                 return projectInfo;
             }
+        }
+
+        /// <summary>
+        /// 获取要绑定的线条列表对象
+        /// </summary>
+        /// <returns></returns>
+        public List<Line> GetLines()
+        {
+            string sourceJson = GetDataFromServer();
+
+            List<Line> lines = new List<Line>();
+            return lines;
         }
     }
 }

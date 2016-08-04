@@ -276,42 +276,55 @@
 	
 	
 	// 改变覆盖物状态  
-function selectAction(){  	
-	for (var i=0; i<polylines.length; i++)
-	{
-		var style = polylines[i].getStrokeStyle();
-		if(style == "solid"){
-			polylines[i].setStrokeColor("green");  
-			polylines[i].setStrokeOpacity(1);
-			map.clearOverlays();
-			map.addOverlay(polylines[i]);
-			//alert("solied,and opacity is"+polylines[i].getStrokeOpacity());
+	function selectAction(){  	
+		for (var i=0; i<polylines.length; i++)
+		{
+			var style = polylines[i].getStrokeStyle();
+			if(style == "solid"){
+				polylines[i].setStrokeColor("green");  
+				polylines[i].setStrokeOpacity(1);
+				map.clearOverlays();
+				map.addOverlay(polylines[i]);
+				//alert("solied,and opacity is"+polylines[i].getStrokeOpacity());
+			}
+			else if(style == "dashed"){
+				//alert("dashed");
+				polylines[i].setStrokeColor("yellow"); 
+			}
 		}
-		else if(style == "dashed"){
-			//alert("dashed");
-			polylines[i].setStrokeColor("yellow"); 
-		}
-	}
-}  
+	}  
 
-function unselectAction(){	
-	for (var i=0; i<polylines.length; i++)
-	{
-		var style = polylines[i].getStrokeStyle();
-		if(style == "solid"){
-			polylines[i].setStrokeColor("blue");  
-			polylines[i].setStrokeOpacity(0.5);
-			map.clearOverlays();
-			map.addOverlay(polylines[i]);
-			//alert("solied,and opacity is"+polylines[i].getStrokeOpacity());
-		}
-		else if(style == "dashed"){
-			//alert("dashed");
-			polylines[i].setStrokeColor("yellow"); 
+	function unselectAction(){	
+		for (var i=0; i<polylines.length; i++)
+		{
+			var style = polylines[i].getStrokeStyle();
+			if(style == "solid"){
+				polylines[i].setStrokeColor("blue");  
+				polylines[i].setStrokeOpacity(0.5);
+				map.clearOverlays();
+				map.addOverlay(polylines[i]);
+				//alert("solied,and opacity is"+polylines[i].getStrokeOpacity());
+			}
+			else if(style == "dashed"){
+				//alert("dashed");
+				polylines[i].setStrokeColor("yellow"); 
+			}
 		}
 	}
-}
   
+  
+    //此函数是与webBrowser交互的
+    //js到form窗体的
+    function NavigateToU3D(message){
+	    //alert("U3d");
+	    window.external.GetNavigateToU3DMessage(message);
+    }
+  
+    //form push data to here,and next is to analyze the data
+    function PushDataToHtml(data){
+	    alert(data);
+	    return data;
+    }  
 
 	
 	
