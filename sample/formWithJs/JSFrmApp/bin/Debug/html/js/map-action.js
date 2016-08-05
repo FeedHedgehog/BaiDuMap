@@ -48,15 +48,16 @@
       map.enableScrollWheelZoom();
       map.enableKeyboard();
       map.enableDragging();
-      map.enableDoubleClickZoom()
-	  map.addEventListener("click",function(e){
-		  if(e.overlay){
-			selectAction();
-		}
-		else{
-			unselectAction();
-		}
-	  });
+      //map.enableDoubleClickZoom();
+	  map.disableDoubleClickZoom();
+	  // map.addEventListener("click",function(e){
+		  // if(e.overlay){
+			// selectAction();
+		// }
+		// else{
+			// unselectAction();
+		// }
+	  // });
       //custom events
 	  addZoomEndHandler(15);	  
     }
@@ -120,6 +121,7 @@
 			map.clearOverlays();			
 			map.addOverlay(polyline); 	
 			polyline.addEventListener("click",clickPolylineHandler);
+			// polyline.addEventListener("dblclick",clickPolylineHandler);
 			polyline.show();
 		}
 		else{
@@ -129,9 +131,23 @@
 		//alert(isShow);
 	}
 	
-	//点击折线的时候改变颜色和透明度
+	//click event on polyline
 	function clickPolylineHandler(e){
-		
+		alert("popyline clicked");
+		var select = false;
+		if(select){
+			selectAction();
+		}else{
+			unselectAction();
+		}
+		select =! select;
+		NavigateToU3D("我来自html的js代码");
+	}
+	
+	//double click event on polyline
+	function doubleClickPolylineHandler(){
+		alert("popyline double clicked");
+		NavigateToU3D("我来自html的js代码");
 	}
 	
 	//add label to Polyline
@@ -298,6 +314,26 @@
 	}  
 
 	function unselectAction(){	
+		polylines = [
+				  new BMap.Polyline([
+				  new BMap.Point(104.853864,26.598749),
+				  new BMap.Point(104.848474,26.593128),
+				  new BMap.Point(104.861553,26.58854),
+				  new BMap.Point(104.864931,26.587829),
+				  new BMap.Point(104.868165,26.58686),
+				  new BMap.Point(104.869458,26.592223),
+				  new BMap.Point(104.86989,26.593322),
+				  new BMap.Point(104.860619,26.595841),
+				  new BMap.Point(104.86141,26.597844),
+				  new BMap.Point(104.858607,26.598943),
+				  new BMap.Point(104.856738,26.598038),
+				  new BMap.Point(104.855373,26.598167),
+				  new BMap.Point(104.853792,26.598878),
+				  new BMap.Point(104.853792,26.598878),
+				  new BMap.Point(104.853792,26.598878),
+				  new BMap.Point(104.853792,26.598878)
+				], {strokeColor:"blue", strokeWeight:20, strokeOpacity:0.5})
+			];
 	    if(polylines!=null || polylines.length>0){
 			for (var i=0; i<polylines.length; i++)
 			{
@@ -318,7 +354,7 @@
 	}
   
   
-    //此函数是与webBrowser交互的
+    /****************************此函数是与webBrowser交互的**************************/
     //js到form窗体的
     function NavigateToU3D(message){
 	    //alert("U3d");
@@ -326,9 +362,12 @@
     }
   
     //form push data to here,and next is to analyze the data
-    function PushDataToHtml(data){
-	    alert(data);
-	    return data;
+    function PushDataToHtml(data){	 
+		alert(data);	
+		//explain the string data to json
+		var jsondata = data.parseJSON();
+		 alert(jsondata);
+	    return jsondata;
     }  
 
 	

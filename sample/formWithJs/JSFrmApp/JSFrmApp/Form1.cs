@@ -67,12 +67,12 @@ namespace JSFrmApp
         #region Public ExtentionMethods
 
         /// <summary>
-        /// 前台Html中js调用的方法,网页操作cs窗体
+        /// 前台Html中js调用的方法,网页操作cs窗体(html--->Form窗体)
         /// </summary>
         /// <param name="message"></param>
         public void GetNavigateToU3DMessage(string message)
         {
-            MessageBox.Show(message, "client code");
+            MessageBox.Show(message, "From WinForm:");
             //this.Controls.Clear();
             //var dsd = new UserControl1();
             //dsd.Dock = DockStyle.Fill;
