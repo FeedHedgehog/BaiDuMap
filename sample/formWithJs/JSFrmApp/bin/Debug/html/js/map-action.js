@@ -21,12 +21,16 @@
 		  });
 	}
 	
+	//deal the cookieds affairs
+	function mapOnload(){
+		//alert("map onload");
+	}
 	
 	
     //create  and initialize the baidu map.
     function initMap(){
 	  //create the baidu map
-      createMap();
+      createMap(5,15);
 	  //set map's events
       setMapEvent();
 	  //add the controls to baidu map
@@ -35,11 +39,12 @@
     }
 	
 	//set the center of the map for "六盘水市"
-    function createMap(){ 
+    function createMap(startzoom,endzoom){ 
       map = new BMap.Map("allmap"); 
-      map.centerAndZoom(new BMap.Point(104.072222,30.663484),15);
+      map.centerAndZoom(new BMap.Point(104.072222,30.663484),startzoom);
 	  window.setTimeout(function(){   
-		   map.panTo(new BMap.Point(104.870896,26.594743));   
+		   map.setZoom(endzoom);
+		   map.panTo(new BMap.Point(104.870896,26.594743),false);   
 	  }, 2000);
     }
 	
@@ -59,7 +64,11 @@
 		// }
 	  // });
       //custom events
-	  addZoomEndHandler(15);	  
+	  addZoomEndHandler(15);	
+	  map.addEventListener("clearoverlays",function(e){
+		//alert("clear overlays invoked");	
+	  });
+	 
     }
 	
 	
@@ -71,19 +80,26 @@
       });
     }
 	
+	//target is sender,clickType is click ,doubleClick and so on 
+	function removeClickHandler(target,clickType){
+		target.removeEventListener(clickType,function(){
+			
+		});
+	}
+	
 	//when map zoom to the certain level,it will invoke the addMapOverlay method
 	function addZoomEndHandler(inputzoom){
 		map.addEventListener("zoomend",function(){
 			//get the current zoom of the map
 			var currentzoom = map.getZoom();
-			//alert("当前的zoom:"+currentzoom);
+			alert("当前的zoom:"+currentzoom);
 			if(currentzoom >= inputzoom){
 				//alert("at zoom:"+currentzoom+"zoomended!");
 				//add the overlays to baidu map
 				//addMapOverlay();
 				addCustomPolyline(true);
 				
-				//addMarkerInfoWindow("imgDemo",sContent,inputzoom);				
+				addMarkerInfoWindow("imgDemo",sContent,inputzoom);				
 			}	
 			else{
 				addCustomPolyline(false);
@@ -110,7 +126,7 @@
           new BMap.Point(104.853792,26.598878),
           new BMap.Point(104.853792,26.598878),
           new BMap.Point(104.853792,26.598878)
-		], {strokeColor:"blue", strokeWeight:20, strokeOpacity:0.5});   
+		], {strokeColor:"blue", strokeWeight:20, strokeOpacity:0.5, strokeStyle:"solid"});   
 		if(isShow){
 			var pt1 = new BMap.Point(104.85044,26.595524);			
 			addPolylineLabel(pt1,"100m");
@@ -187,7 +203,7 @@
              });
 		var marker = new BMap.Marker(pt, { icon: cyIcon });  //创建标注		
 	    var infoWindow = new BMap.InfoWindow(content);  // 创建信息窗口对象
-	    map.centerAndZoom(pt, zoom);
+	    map.centerAndZoom(pt, zoom);		
 		map.clearOverlays();
 	    map.addOverlay(marker);
 	    marker.addEventListener("click", function(){          
@@ -352,6 +368,22 @@
 			}
 		}		
 	}
+	
+	function tranlatePlentyPointsToBaidus(points){
+		//坐标转换完之后的回调函数
+		translateCallback = function (data){
+		  if(data.status === 0) {
+			for (var i = 0; i < data.points.length; i++) {
+				map.addOverlay(new BMap.Marker(data.points[i]));
+				map.setCenter(data.points[i]);
+			}
+		  }
+		}
+		setTimeout(function(){
+			var convertor = new BMap.Convertor();
+			convertor.translate(points, 1, 5, translateCallback)
+		}, 1000);
+	}
   
   
     /****************************此函数是与webBrowser交互的**************************/
@@ -365,7 +397,7 @@
     function PushDataToHtml(data){	 
 		alert(data);	
 		//explain the string data to json
-		var jsondata = data.parseJSON();
+		//var jsondata = eval('(' + data + ')'); 		
 		 alert(jsondata);
 	    return jsondata;
     }  

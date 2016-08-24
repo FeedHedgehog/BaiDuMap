@@ -4,7 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 	<style type="text/css">
-	body, html,#allmap {width: 100%;height: 100%;overflow: hidden;margin:0;font-family:"微软雅黑";}
+	body, html,#allmap {width: 100%;height: 100%;overflow: hidden;margin:0;font-family:"微软雅黑";.anchorBL{display:none;}}
 	</style>
     <meta name="keywords" content="百度地图,百度地图API，百度地图自定义工具，百度地图所见即所得工具" />
     <meta name="description" content="百度地图API自定义地图，帮助用户在可视化操作下生成百度地图" />
@@ -12,10 +12,15 @@
     <!--引用百度地图API-->
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=fsYq13sB9k3aO9wW0rosqWzxdwZmcXkF"></script>
 	<script type="text/javascript" src="js/map-action.js"></script>
+	<style type="text/css">  
+   .anchorBL{  
+       display:none;  
+   }  
+  </style> 
 	<!-- <script type="text/javascript" src="js/jquery-3.1.0.js"></script>  -->
   </head>
   
-  <body>
+  <body onload="mapOnload()">
     <!-- <div style="postion:absoulte;left:0;top:0;"><a href="javascript:selectAction();">ChangeColor</a></div>   -->
     <!--百度地图容器-->
     <div id="allmap">	    
@@ -24,6 +29,10 @@
 </html>
 
 <script type="text/javascript">
+	window.onerror=function(error,url,line){
+		//            log(error + "url:" + url + "lineNo:" + line);
+          return true;
+	}
 	var map;
 	//loginServer();
 	//getDataFromServer();

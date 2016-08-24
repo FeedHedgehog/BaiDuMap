@@ -54,7 +54,7 @@ namespace JSFrmApp
             // Ignore the error and suppress the error dialog box. 
             var se = sender;
             MessageBox.Show(string.Format("错误URL：{0},错误代码行号：{1},错误的详细信息：{2}", e.Url, e.LineNumber, e.Description), "系统提示：");
-            //e.Handled = true;
+            e.Handled = true;
         }
 
         private void BtnLoad_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
