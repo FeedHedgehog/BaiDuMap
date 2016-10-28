@@ -93,7 +93,7 @@ namespace JSFrmApp
             webBrowser1.WebBrowserShortcutsEnabled = false;
             webBrowser1.ObjectForScripting = this;
             // Uncomment the following line when you are finished debugging.
-            webBrowser1.ScriptErrorsSuppressed = false;
+            webBrowser1.ScriptErrorsSuppressed = true;
 
             //webBrowser1.DocumentText =
             //  "<html><head><script>" +

@@ -3,12 +3,15 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
 using System.Windows.Forms;
 using JS.Model;
+using System.Threading;
+using System.Windows.Forms.VisualStyles;
 
 namespace JSFrmApp.LogicLayer
 {
@@ -38,11 +41,38 @@ namespace JSFrmApp.LogicLayer
         public void InvokePushDataToHtmlMethod(WebBrowser webBrowser)
         {
             string data = LogicLayer.Logic.Instance.LoginServer();
+            if (string.IsNullOrEmpty(data))
+            {
+                return;
+            }
             if (webBrowser.Document != null)
             {
                 Object[] objArray = new Object[1];
                 objArray[0] = (Object)data;
                 var oSum = webBrowser.Document.InvokeScript("PushDataToHtml", objArray);
+                //if (oSum != null)
+                //{
+                //    MessageBox.Show(oSum.ToString());
+                //}
+
+            }
+
+            //BackgroundWorker work = new BackgroundWorker();
+            //work.DoWork += Work_DoWork;
+            //Tuple<WebBrowser, string> tuple = new Tuple<WebBrowser, string>(webBrowser, data);
+            //work.RunWorkerAsync(tuple);           
+        }
+
+        private void Work_DoWork(object sender, DoWorkEventArgs e)
+        {
+            
+            Tuple<WebBrowser, string> tuple = e.Argument as Tuple<WebBrowser, string>;
+            WebBrowser browser = (WebBrowser)tuple.Item1;
+            if (browser.Document != null)
+            {
+                Object[] objArray = new Object[1];
+                objArray[0] = (Object)tuple.Item2;
+                var oSum = browser.Document.InvokeScript("PushDataToHtml", objArray);
                 //if (oSum != null)
                 //{
                 //    MessageBox.Show(oSum.ToString());
@@ -57,43 +87,40 @@ namespace JSFrmApp.LogicLayer
             #region Login
             //ThreadPool.QueueUserWorkItem((o) =>
             //{
-            //    BeginInvoke(new Action(() =>                 //UI是主线程，要想在线程里使用主线程的UI就要这样做
-            //    {
-            try
-            {
-                string url = Static.Global.BaseServerIP + "/login";
 
-                IDictionary<string, string> parameters = new Dictionary<string, string>();
-                parameters.Add("j_username", "admin");
-                parameters.Add("j_password", "111111");
-                parameters.Add("remember_me", "on");
-                parameters.Add("j_type", "mobile");
-
-                String xml = HttpHelper.Instance.Post(url, parameters, null, null, 2000, "", null, null, null);
-                JObject jo = (JObject)JsonConvert.DeserializeObject(xml);
-
-                string loginstate = jo["state"]["code"].ToString();
-                if (loginstate == "1")
+                try
                 {
-                    result = GetDataFromServer();
-                }
+                    string url = Static.Global.BaseServerIP + "/login";
 
-                else
+                    IDictionary<string, string> parameters = new Dictionary<string, string>();
+                    parameters.Add("j_username", "admin");
+                    parameters.Add("j_password", "111111");
+                    parameters.Add("remember_me", "on");
+                    parameters.Add("j_type", "mobile");
+
+                    String xml = HttpHelper.Instance.Post(url, parameters, null, null, 2000, "", null, null, null);
+                    JObject jo = (JObject)JsonConvert.DeserializeObject(xml);
+
+                    string loginstate = jo["state"]["code"].ToString();
+                    if (loginstate == "1")
+                    {
+                        result = GetDataFromServer();
+                    }
+
+                    else
+                    {
+                        result = string.Empty;
+                        MessageBox.Show("登陆失败，请重新登录！", "系统提示：");
+                    }
+                }
+                catch (NullReferenceException ex)
                 {
                     result = string.Empty;
-                    MessageBox.Show("登陆失败，请重新登录！", "系统提示：");
                 }
-            }
-            catch (NullReferenceException ex)
-            {
-                result = string.Empty;
-            }
-            catch (Exception ex)
-            {
-                result = string.Empty;
-            }
-
-            //    }));
+                catch (Exception ex)
+                {
+                    result = string.Empty;
+                }
             //});
             return result;
             #endregion

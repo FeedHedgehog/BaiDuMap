@@ -398,8 +398,8 @@
 		alert(data);	
 		//explain the string data to json
 		//var jsondata = eval('(' + data + ')'); 		
-		 alert(jsondata);
-	    return jsondata;
+		 //alert(jsondata);
+	    return data;
     }  
 
 	
